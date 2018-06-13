@@ -114,7 +114,7 @@ func rpmDataFromContainer(image pkgutil.Image) (map[string]util.PackageInfo, err
 	defer logrus.Infof("Removing image %s", imageName)
 
 	contConf := godocker.Config{
-		Entrypoint: []string{"rpm", "--nodigest", "--nosignature", "-qa", "--qf", "%{NAME}\t%{VERSION}\t%{SIZE}\n"},
+		Entrypoint: []string{"rpm", "--nodigest", "--nosignature", "-qa", "--qf", "%{NAME}\t%|EPOCH?{%{EPOCH}}:{0}|:%{VERSION}-%{RELEASE}%|ARCH?{.%{ARCH}}:{}|\t%{SIZE}\n"},
 		Image:      imageName,
 	}
 
